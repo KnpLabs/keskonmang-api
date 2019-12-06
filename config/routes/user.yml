@@ -1,4 +1,4 @@
 create:
-    path: /create
-    controller: App\Symfony\EndPoint\User::create
-    methods: [POST]
+    path: /me
+    controller: App\Symfony\EndPoint\User::me
+    methods: [GET]

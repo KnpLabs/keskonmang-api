@@ -1,0 +1,9 @@
+services:
+  App\Google\Client:
+    factory: ['App\Google\ClientFactory', 'create']
+    arguments:
+      - '%env(GOOGLE_CLIENT_ID)%'
+
+  App\Google\TokenValidator:
+    arguments:
+      - '@App\Google\Client'
