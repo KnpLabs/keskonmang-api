@@ -16,3 +16,7 @@ services:
     App\:
         resource: '../src/*'
         exclude: '../src/{Entity,Migrations,Tests,Kernel.php}'
+
+    App\Symfony\EventListener\RequestListener:
+        tags:
+            - { name: kernel.event_listener, event: kernel.request }
