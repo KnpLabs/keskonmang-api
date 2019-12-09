@@ -2,9 +2,6 @@
 
 namespace App\Symfony\Security;
 
-use App\Domain\User;
-use App\Google\TokenValidator;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,23 +13,18 @@ use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
 
 class TokenAuthenticator extends AbstractGuardAuthenticator
 {
-    private $orm;
-
-    private $tokenValidator;
+    private $userProvider;
 
     public function __construct(
-        EntityManagerInterface $orm,
-        TokenValidator $tokenValidator
+        GoogleUserProvider $userProvider
     ) {
-        $this->orm = $orm;
-        $this->tokenValidator = $tokenValidator;
+        $this->userProvider = $userProvider;
     }
 
     public function supports(Request $request)
     {
         return $request->headers->has('Authorization');
     }
-
 
     public function getCredentials(Request $request): string
     {     
@@ -41,30 +33,13 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
         return \str_replace('Bearer ', '', $authorization);
     }
 
-    // @TODO create a provider service to do this and improve testability
     public function getUser($token, UserProviderInterface $userProvider)
     {        
         if (null === $token) {
             return;
         }
 
-        // verify JWT over google
-        $googleSub = $this->tokenValidator->verifyToken($token);
-
-        $user = $this
-            ->orm
-            ->getRepository(User::class)
-            ->findOneBy(['googleId' => $googleSub])
-        ;
-
-        // if user dont exist, create it in the DB
-        if(!$user) {
-            $user = new User($googleSub);
-            $this->orm->persist($user);
-            $this->orm->flush();
-        }
-
-        return $user;
+        return $this->userProvider->getUser($token);
     }
 
     public function checkCredentials($credentials, UserInterface $user)
