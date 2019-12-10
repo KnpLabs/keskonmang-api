@@ -9,7 +9,6 @@ security:
         main:
             anonymous: ~
             logout: ~
-
             guard:
                 authenticators:
                     - App\Symfony\Security\TokenAuthenticator

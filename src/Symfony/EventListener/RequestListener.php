@@ -12,9 +12,9 @@ class RequestListener
 
         if ('json' === $request->getContentType()) {
             $request->request->replace(
-                null !== ($data = \json_decode($request->getContent(), true)) ?
-                $data :
-                []
+                null !== ($data = \json_decode($request->getContent(), true))
+                ? $data
+                : []
             );
         }        
     }
