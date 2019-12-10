@@ -1,0 +1,6 @@
+services:
+  App\Symfony\EndPoint\User:
+    public: true
+    arguments:
+      - '@App\Google\TokenValidator'
+      - '@doctrine.orm.entity_manager'

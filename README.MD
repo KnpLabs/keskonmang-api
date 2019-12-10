@@ -7,4 +7,4 @@ docker-compose up
 ```
 
 # Installing dependencies
-`docker-compose exec php composer update`
+`docker-compose run php composer install`
