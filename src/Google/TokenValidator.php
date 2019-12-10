@@ -20,7 +20,7 @@ class TokenValidator
      * 
      * @return string the authenticated user id
      * 
-     * @throws GoogleTokenException
+     * @throws Exception
      */
     public function verifyToken(string $token): string
     {
@@ -30,7 +30,7 @@ class TokenValidator
         if ($payload) {
             return $payload['sub'];
         } else {
-            throw new GoogleTokenException('Invalid token id.');
+            throw new \Exception('Invalid token id.');
         }
     }
 }
