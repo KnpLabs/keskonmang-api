@@ -8,10 +8,10 @@ use App\Foursquare\FoursquareFilter;
 class Venue implements FoursquareFilter
 {
     // @see https://developer.foursquare.com/docs/resources/categories
+    const DEFAULT_CATEGORY = '4d4b7105d754a06374d81259';
     const SUPPORTED_CATEGORIES = [
-        '4d4b7105d754a06374d81259' // Nourriture
+        self::DEFAULT_CATEGORY // Nourriture
     ];
-
     const DEFAULT_RADIUS = 1000;
 
     /** @var double */
@@ -61,6 +61,8 @@ class Venue implements FoursquareFilter
 
         if (\count($this->categories) > 0) {
             $q .= \sprintf('&categoryId=%s', \implode(',', $this->categories));
+        } else {
+            $q .= \sprintf('&categoryId=%s', self::DEFAULT_CATEGORY);
         }
 
         if($this->radius !== null) {
