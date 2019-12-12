@@ -2,3 +2,10 @@ search:
     path: /search
     controller: App\Symfony\EndPoint\Venue::search
     methods: [GET]
+
+show:
+    path: /{id}
+    controller: App\Symfony\EndPoint\Venue::show
+    methods: [GET]
+    requirements:
+        id: \w+

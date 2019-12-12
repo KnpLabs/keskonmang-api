@@ -26,7 +26,7 @@ class Client implements FoursquareClient
         $this->apiVersion = $apiVersion;
     }
 
-    public function request(string $method, string $endpoint, string $filters): ResponseInterface
+    public function request(string $method, string $endpoint, string $filters = ''): ResponseInterface
     {
         $client = new HttpClient();
 
@@ -51,6 +51,17 @@ class Client implements FoursquareClient
             'GET',
             '/venues/search',
             $filter->toQueryParameters()
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getVenueDetails(string $id): ResponseInterface
+    {
+        return $this->request(
+            'GET',
+            \sprintf('/venues/%s', $id)
         );
     }
 }

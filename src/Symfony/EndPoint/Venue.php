@@ -31,4 +31,17 @@ class Venue extends Controller
 
         return new JsonResponse($body->response->venues);
     }
+
+    public function show(Request $request, string $id): JsonResponse
+    {
+        try {
+            $response = $this->client->getVenueDetails($id);
+        } catch (\Exception $e) {
+            return new JsonReponse(Response::HTTP_BAD_REQUEST, $response->getBody());
+        }
+
+        $body = \json_decode($response->getBody());
+
+        return new JsonResponse($body->response->venue);
+    }
 }
