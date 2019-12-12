@@ -49,7 +49,8 @@ class Client implements FoursquareClient
     {
         return $this->request(
             'GET',
-            \sprintf('/venues/search'), $filter->toQueryParameters()
+            '/venues/search',
+            $filter->toQueryParameters()
         );
     }
 }

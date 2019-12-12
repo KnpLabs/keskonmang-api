@@ -14,9 +14,7 @@ class Venue extends Controller
     /** @var FoursquareClient */
     private $client;
 
-    public function __construct(
-        FoursquareClient $client
-    ) {
+    public function __construct(FoursquareClient $client) {
         $this->client = $client;
     }
 
@@ -29,6 +27,8 @@ class Venue extends Controller
             return new JsonResponse(Response::HTTP_BAD_REQUEST, $response->getBody());
         }
 
-        return new JsonResponse(\json_decode($response->getBody()));
+        $body = \json_decode($response->getBody());
+
+        return new JsonResponse($body->response->venues);
     }
 }
