@@ -1,0 +1,4 @@
+search:
+    path: /search
+    controller: App\Symfony\EndPoint\Venue::search
+    methods: [GET]
