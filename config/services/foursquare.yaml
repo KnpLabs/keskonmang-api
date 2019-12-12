@@ -1,0 +1,6 @@
+services:
+  App\Foursquare\Client:
+    arguments:
+      - '%env(FOURSQUARE_CLIENT_ID)%'
+      - '%env(FOURSQUARE_CLIENT_SECRET)%'
+      - '%env(FOURSQUARE_API_VERSION)%'

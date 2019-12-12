@@ -1,6 +1,5 @@
 services:
-  App\Symfony\EndPoint\User:
+  App\Symfony\EndPoint\Venue:
     public: true
     arguments:
-      - '@App\Google\TokenValidator'
-      - '@doctrine.orm.entity_manager'
+      - '@App\Foursquare\Client'

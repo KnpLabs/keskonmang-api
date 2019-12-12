@@ -18,4 +18,4 @@ services:
     # this creates a service per class whose id is the fully-qualified class name
     App\:
         resource: '../src/*'
-        exclude: '../src/{Google,Symfony/EventListener,Symfony/Migrations,Kernel.php}'
+        exclude: '../src/{Google,Foursquare,Symfony/EventListener,Symfony/Migrations,Symfony/EndPoint,Kernel.php}'
