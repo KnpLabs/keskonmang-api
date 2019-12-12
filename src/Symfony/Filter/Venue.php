@@ -12,24 +12,32 @@ class Venue implements FoursquareFilter
         '4d4b7105d754a06374d81259' // Nourriture
     ];
 
+    const DEFAULT_RADIUS = 1000;
+
     /** @var double */
     public $latitude;
 
     /** @var double */
     public $longitude;
 
+    /** @var int search perimeter in meters */
+    public $radius;
+
     /** @var array an array of category ids */
     public $categories;
 
     public function __construct(Request $request) {
-        $this->latitude = $request->query->get('latitude') !== null
+        $this->latitude = $request->query->get('latitude', null) !== null
             ? (double) $request->query->get('latitude')
             : null
         ;
-        $this->longitude =$request->query->get('longitude') !== null
+
+        $this->longitude =$request->query->get('longitude', null) !== null
             ? (double) $request->query->get('longitude')
             : null
         ;
+
+        $this->radius = $request->query->getInt('radius', self::DEFAULT_RADIUS);
 
         if (
             !is_double($this->latitude) ||
@@ -53,6 +61,10 @@ class Venue implements FoursquareFilter
 
         if (\count($this->categories) > 0) {
             $q .= \sprintf('&categoryId=%s', \implode(',', $this->categories));
+        }
+
+        if($this->radius !== null) {
+            $q .= \sprintf('&radius=%d', $this->radius);
         }
 
         return $q;
