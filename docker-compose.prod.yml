@@ -22,6 +22,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.nvinx.rule=Host(`api.traefik.test`)"
       - "traefik.http.routers.nvinx.entrypoints=web"
+      - "traefik.docker.network=traefik"
     networks:
      - traefik
      - internal
