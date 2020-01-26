@@ -14,8 +14,8 @@ services:
     networks:
      - internal
 
-  nginx:
-    image: quay.io/knplabs/keskonmange-api:nginx-${IMAGE_TAG}
+  app:
+    image: quay.io/knplabs/keskonmange-api:app-${IMAGE_TAG}
     build:
       context: .
       dockerfile: .docker/nginx/Dockerfile
@@ -24,10 +24,10 @@ services:
       - php
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.nginx.rule=Host(`api.keskonmange.knpnet.net`)"
-      - "traefik.http.routers.nginx.entrypoints=web"
-      - "traefik.http.routers.nginx.entrypoints=websecure"
-      - "traefik.http.routers.nginx.tls.certresolver=keskonmange"
+      - "traefik.http.routers.app.rule=Host(`api.keskonmange.knpnet.net`)"
+      - "traefik.http.routers.app.entrypoints=web"
+      - "traefik.http.routers.app.entrypoints=websecure"
+      - "traefik.http.routers.app.tls.certresolver=keskonmange"
       - "traefik.docker.network=traefik"
     networks:
      - traefik
@@ -38,7 +38,7 @@ services:
     build:
       context: .
       dockerfile: .docker/php/Dockerfile
-      target: prod
+      target: php
     restart: on-failure
     env_file:
       - .env

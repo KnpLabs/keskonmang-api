@@ -1,3 +1,6 @@
 FROM nginx:1.15.3-alpine
 
-COPY ./.docker/nginx/default.conf /etc/nginx/conf.d/default.conf:ro
+RUN rm /etc/nginx/conf.d/default.conf
+
+COPY .docker/nginx/nginx.conf.tmpl /etc/nginx/conf.d/default.conf
+

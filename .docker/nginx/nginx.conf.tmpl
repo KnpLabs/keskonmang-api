@@ -3,7 +3,7 @@ server {
  server_name ~.*;
 
  location / {
-    root /usr/src/app;
+    root /app;
 
     try_files $uri /index.php$is_args$args;
  }
@@ -16,7 +16,7 @@ server {
     fastcgi_buffers 16 16k;
     fastcgi_buffer_size 32k;
     include fastcgi_params;
-    fastcgi_param SCRIPT_FILENAME /usr/src/app/public/index.php;
+    fastcgi_param SCRIPT_FILENAME /app/public/index.php;
 
     # allow cross origin requests
     add_header Access-Control-Allow-Origin "*";
@@ -29,7 +29,7 @@ server {
         add_header Access-Control-Allow-Credentials true;
 
         return 200;
-    }     
+    }
  }
 
  error_log /dev/stderr debug;

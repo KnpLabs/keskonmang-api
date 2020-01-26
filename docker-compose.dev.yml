@@ -27,7 +27,7 @@ services:
     build:
       context: .
       dockerfile: .docker/php/Dockerfile
-      target: prod
+      target: php
     restart: on-failure
     volumes:
       - './:/app'
