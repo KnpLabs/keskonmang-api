@@ -19,12 +19,10 @@ RUN pecl install apcu-5.1.8 \
 
 WORKDIR /app
 
-COPY composer.* /app/
+COPY ./ /app/
 
 RUN composer install --prefer-dist --no-scripts --no-dev \
     && composer clear-cache
-
-COPY ./ /app/
 
 RUN php -d display_errors=on bin/console cache:warmup --env=prod
 
