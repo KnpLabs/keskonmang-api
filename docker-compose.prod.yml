@@ -1,0 +1,54 @@
+version: '3.7'
+services:
+  mysql:
+    image: quay.io/knplabs/keskonmange-api:mysql-${IMAGE_TAG}
+    build:
+      context: .
+      dockerfile: .docker/mysql/Dockerfile
+    restart: on-failure
+    environment:
+      - MYSQL_USER=root
+      - MYSQL_ROOT_PASSWORD=
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+      - MYSQL_DATABASE=keskonmange
+    networks:
+     - internal
+
+  app:
+    image: quay.io/knplabs/keskonmange-api:app-${IMAGE_TAG}
+    build:
+      context: .
+      dockerfile: .docker/nginx/Dockerfile
+    restart: on-failure
+    depends_on:
+      - php
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.app.rule=Host(`api.keskonmange.knpnet.net`)"
+      - "traefik.http.routers.app.entrypoints=web"
+      - "traefik.http.routers.app.entrypoints=websecure"
+      - "traefik.http.routers.app.tls.certresolver=keskonmange"
+      - "traefik.docker.network=traefik"
+    networks:
+     - traefik
+     - internal
+
+  php:
+    image: quay.io/knplabs/keskonmange-api:php-${IMAGE_TAG}
+    build:
+      context: .
+      dockerfile: .docker/php/Dockerfile
+      target: php
+    restart: on-failure
+    env_file:
+      - .env
+    user: 1000:1000
+    networks:
+     - internal
+
+networks:
+  traefik:
+    external:
+      name: traefik
+  internal:
+    driver: bridge

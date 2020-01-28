@@ -24,7 +24,7 @@ class Venue extends Controller
             $filter = new VenueFilter($request);
             $response = $this->client->searchVenues($filter);
         } catch(\Exception $e) {
-            return new JsonResponse(Response::HTTP_BAD_REQUEST, $response->getBody());
+            return new JsonResponse($e->getMessage(), Response::HTTP_BAD_REQUEST);
         }
 
         $body = \json_decode($response->getBody());
@@ -37,7 +37,7 @@ class Venue extends Controller
         try {
             $response = $this->client->getVenueDetails($id);
         } catch (\Exception $e) {
-            return new JsonReponse(Response::HTTP_BAD_REQUEST, $response->getBody());
+            return new JsonReponse($e->getMessage(), Response::HTTP_BAD_REQUEST);
         }
 
         $body = \json_decode($response->getBody());
