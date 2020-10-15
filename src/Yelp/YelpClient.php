@@ -8,5 +8,5 @@ interface YelpClient
 {
     public function searchRestaurants(YelpFilter $filter): ResponseInterface;
 
-    public function getVenueDetails(string $id): ResponseInterface;
+    public function getRestaurantDetails(string $id): ResponseInterface;
 }

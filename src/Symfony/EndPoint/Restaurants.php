@@ -2,7 +2,7 @@
 
 namespace App\Symfony\EndPoint;
 
-use App\Symfony\Filter\Restaurants as VenueFilter;
+use App\Symfony\Filter\Restaurants as RestaurantFilter;
 use App\Yelp\YelpClient;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -22,7 +22,7 @@ class Restaurants extends Controller
     public function search(Request $request): JsonResponse
     {
         try {
-            $filter = new VenueFilter($request);
+            $filter = new RestaurantFilter($request);
             $response = $this->client->searchRestaurants($filter);
         } catch (\Exception $e) {
             return new JsonResponse($e->getMessage(), Response::HTTP_BAD_REQUEST);
@@ -36,7 +36,7 @@ class Restaurants extends Controller
     public function show(Request $request, string $id): JsonResponse
     {
         try {
-            $response = $this->client->getVenueDetails($id);
+            $response = $this->client->getRestaurantDetails($id);
         } catch (\Exception $e) {
             return new JsonReponse($e->getMessage(), Response::HTTP_BAD_REQUEST);
         }

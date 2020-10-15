@@ -47,7 +47,7 @@ class Client implements YelpClient
     /**
      * {@inheritdoc}
      */
-    public function getVenueDetails(string $id): ResponseInterface
+    public function getRestaurantDetails(string $id): ResponseInterface
     {
         return $this->request(
             'GET',
