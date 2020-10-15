@@ -7,6 +7,7 @@
         "ext-iconv": "*",
         "google/apiclient": "^2.4",
         "guzzlehttp/guzzle": "~6.0",
+        "symfony/dotenv": "^4.1",
         "symfony/console": "^4.1",
         "symfony/flex": "^1.0",
         "symfony/form": "^4.1",
@@ -14,10 +15,10 @@
         "symfony/lts": "^4@dev",
         "symfony/orm-pack": "^1.0",
         "symfony/validator": "^4.1",
-        "symfony/yaml": "^4.1"
+        "symfony/yaml": "^4.1",
+        "symfony/security-bundle": "^4.1"
     },
     "require-dev": {
-        "symfony/dotenv": "^4.1",
         "symfony/web-server-bundle": "^4.1"
     },
     "config": {
