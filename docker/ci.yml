@@ -2,8 +2,8 @@ version: '3.7'
 services:
   mysql:
     build:
-      context: .
-      dockerfile: .docker/mysql/Dockerfile
+      context: ..
+      dockerfile: docker/mysql/Dockerfile
     restart: on-failure
     environment:
       - MYSQL_USER=root
@@ -13,8 +13,8 @@ services:
 
   nginx:
     build:
-      context: .
-      dockerfile: .docker/nginx/Dockerfile
+      context: ..
+      dockerfile: docker/nginx/Dockerfile
     restart: on-failure
     ports:
       - '8081:80'
@@ -23,12 +23,9 @@ services:
 
   php:
     build:
-      context: .
-      dockerfile: .docker/php/Dockerfile
-      target: php
+      context: ..
+      dockerfile: docker/app/Dockerfile
     restart: on-failure
-    volumes:
-      - './:/app'
     env_file:
-      - .env
+      - ../.env
     user: 1000:1000

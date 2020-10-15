@@ -1,25 +1,10 @@
 REMOTE ?= deploy@keskonmange.knpnet.net
 REMOTE_PATH ?= ~/apps/keskonmange.api
 STAGE ?= dev
+IMAGE_TAG ?= dev
 
-# Expose env vars from .env to this Makefile
--include .env
-
-.PHONY: .ensure-stage-exists
-.ensure-stage-exists:
-ifeq (,$(wildcard ./docker-compose.$(STAGE).yml))
-	@echo "Env $(STAGE) not supported."
-	@exit 1
-endif
-
-.PHONY: .validate-tag
-.validate-tag:
-ifneq ($(STAGE),dev)
-ifeq ($(IMAGE_TAG),)
-	@echo "You can't build, push or deploy to production without an IMAGE_TAG.\n"
-	@exit 1
-endif
-endif
+.PHONY: dev
+dev: cp-env build install-deps start
 
 .PHONY: .remote-edit-env
 .remote-edit-env:
@@ -27,35 +12,65 @@ endif
 
 .PHONY: cp-env
 cp-env:
-	cp .env.dist .env
+	cp -n .env.dist .env
 
-.PHONY:
+.PHONY: install-deps
 install-deps:
-	docker-compose -f ./docker-compose.$(STAGE).yml run --rm php composer install
+	docker-compose run --rm php composer install --prefer-dist
 
-.PHONY:
+.PHONY: start
 start:
-	docker-compose -f ./docker-compose.$(STAGE).yml up
+	docker-compose -f docker/$(STAGE).yml up -d --no-build --remove-orphans
+
+.PHONY: stop
+stop:
+	docker-compose down
 
 .PHONY: build
-build: .ensure-stage-exists .validate-tag
-	docker-compose -f ./docker-compose.$(STAGE).yml build
+build: .ensure-stage-exists .validate-image-tag
+	docker-compose -f docker/$(STAGE).yml build $(SERVICES)
+
+.PHONY: lint-dockerfiles
+lint-dockerfiles:
+	@./bin/lint-dockerfiles
+
+.PHONY: lint-compose-files
+lint-compose-files:
+	@for file in docker/*.yml; do \
+		docker-compose -f $$file config >/dev/null; \
+	done
+
+.PHONY: lint-yaml
+lint-yaml:
+	docker-compose run --rm php bin/console lint:yaml src --parse-tags
 
 .PHONY: push
-push: .ensure-stage-exists .validate-tag
-ifeq ($(STAGE),dev)
-	@echo "You can't push dev env to remote repo.\n"
-	@exit 1
-endif
-	docker-compose -f ./docker-compose.$(STAGE).yml push
+push: .ensure-stage-exists .validate-image-tag
+	docker-compose -f docker/$(STAGE).yml push
 
 .PHONY: remote-deploy
-remote-deploy: .ensure-stage-exists .validate-tag .remote-edit-env
+remote-deploy: .ensure-stage-exists .validate-image-tag .remote-edit-env
 	scp ./docker-compose.$(STAGE).yml ${REMOTE}:${REMOTE_PATH}/docker-compose.$(STAGE).yml
 	ssh -t ${REMOTE} '\
 		cd ${REMOTE_PATH} && \
 		source .env && \
 		export IMAGE_TAG=$(IMAGE_TAG) && \
-		docker-compose -f ./docker-compose.${STAGE}.yml pull --include-deps && \
-		docker-compose -f ./docker-compose.$(STAGE).yml up -d --no-build --remove-orphans && \
-		docker-compose -f ./docker-compose.$(STAGE).yml ps'
+		docker-compose -f docker/${STAGE}.yml pull --include-deps && \
+		docker-compose -f docker/$(STAGE).yml up -d --no-build --remove-orphans && \
+		docker-compose -f docker/$(STAGE).yml ps'
+
+.PHONY: .ensure-stage-exists
+.ensure-stage-exists:
+ifeq (,$(wildcard docker/$(STAGE).yml))
+	@echo "Env $(STAGE) not supported."
+	@exit 1
+endif
+
+.PHONY: .validate-image-tag
+.validate-image-tag:
+ifneq ($(STAGE),dev)
+ifeq ($(IMAGE_TAG),)
+	@echo "You can't build, push or deploy to prod without an IMAGE_TAG.\n"
+	@exit 1
+endif
+endif

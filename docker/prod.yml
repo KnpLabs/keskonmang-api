@@ -3,8 +3,8 @@ services:
   mysql:
     image: quay.io/knplabs/keskonmange-api:mysql-${IMAGE_TAG}
     build:
-      context: .
-      dockerfile: .docker/mysql/Dockerfile
+      context: ..
+      dockerfile: docker/mysql/Dockerfile
     restart: on-failure
     environment:
       - MYSQL_USER=root
@@ -17,8 +17,8 @@ services:
   app:
     image: quay.io/knplabs/keskonmange-api:app-${IMAGE_TAG}
     build:
-      context: .
-      dockerfile: .docker/nginx/Dockerfile
+      context: ..
+      dockerfile: docker/nginx/Dockerfile
     restart: on-failure
     depends_on:
       - php
@@ -36,12 +36,12 @@ services:
   php:
     image: quay.io/knplabs/keskonmange-api:php-${IMAGE_TAG}
     build:
-      context: .
-      dockerfile: .docker/php/Dockerfile
+      context: ..
+      dockerfile: docker/app/Dockerfile
       target: php
     restart: on-failure
     env_file:
-      - .env
+      - ../.env
     user: 1000:1000
     networks:
      - internal
