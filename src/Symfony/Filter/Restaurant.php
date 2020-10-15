@@ -10,7 +10,22 @@ class Restaurant implements YelpFilter
     // @see https://www.yelp.com/developers/documentation/v3/all_category_list
     const DEFAULT_CATEGORY = 'restaurants';
     const SUPPORTED_CATEGORIES = [
-        self::DEFAULT_CATEGORY // Nourriture
+        self::DEFAULT_CATEGORY,
+        'bistros',
+        'brasseries',
+        'burgers',
+        'creperies',
+        'halal',
+        'kebab',
+        'noodles',
+        'pizza',
+        'salad',
+        'sandwiches',
+        'steak',
+        'sushi',
+        'vegetarian',
+        'wok',
+        'wraps',
     ];
     const DEFAULT_RADIUS = 2000;
     const LIMIT_RESULTS = 50;
@@ -21,22 +36,22 @@ class Restaurant implements YelpFilter
     /** @var int search perimeter in meters */
     public $radius;
 
-    /** @var array an array of category ids */
+    /** @var array an array of category names */
     public $categories;
 
     public function __construct(Request $request)
     {
         $this->location = $request->query->get('location', null);
 
-        $this->radius = $request->query->getInt('radius', self::DEFAULT_RADIUS);
-
         if (!$this->location) {
-            throw new \Exception('Location are mandatory parameter.');
+            throw new \Exception('Location are a mandatory parameter.');
         }
+
+        $this->radius = $request->query->getInt('radius', self::DEFAULT_RADIUS);
 
         $this->categories = [];
 
-        foreach (\explode(',', $request->query->get('categories')) as $category) {
+        foreach ($request->query->get('categories', []) as $category) {
             if (\in_array($category, self::SUPPORTED_CATEGORIES)) {
                 $this->categories[] = $category;
             }
