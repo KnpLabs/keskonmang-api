@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Foursquare;
+namespace App\Yelp;
 
-interface FoursquareFilter
+interface YelpFilter
 {
     public function toQueryParameters(): string;
 }
