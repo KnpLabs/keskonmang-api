@@ -5,14 +5,15 @@ namespace App\Symfony\Filter;
 use App\Yelp\YelpFilter;
 use Symfony\Component\HttpFoundation\Request;
 
-class Venue implements YelpFilter
+class Restaurants implements YelpFilter
 {
     // @see https://www.yelp.com/developers/documentation/v3/all_category_list
     const DEFAULT_CATEGORY = 'restaurants';
     const SUPPORTED_CATEGORIES = [
         self::DEFAULT_CATEGORY // Nourriture
     ];
-    const DEFAULT_RADIUS = 40000;
+    const DEFAULT_RADIUS = 2000;
+    const LIMIT_RESULTS = 50;
 
     /** @var string */
     public $location;
@@ -55,6 +56,8 @@ class Venue implements YelpFilter
         if ($this->radius !== null) {
             $q .= \sprintf('&radius=%d', $this->radius);
         }
+
+        $q .= \sprintf("&limit=", self::LIMIT_RESULTS);
 
         return $q;
     }

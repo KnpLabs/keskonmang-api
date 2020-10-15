@@ -1,7 +1,7 @@
 users:
-    resource: 'routes/user.yml'
-    prefix: '/users'
+  resource: 'routes/user.yml'
+  prefix: '/users'
 
-venues:
-    resource: 'routes/venues.yml'
-    prefix: '/venues'
+restaurants:
+  resource: 'routes/restaurants.yml'
+  prefix: '/restaurants'

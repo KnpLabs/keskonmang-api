@@ -35,7 +35,7 @@ class Client implements YelpClient
     /**
      * {@inheritdoc}
      */
-    public function searchVenues(YelpFilter $filter): ResponseInterface
+    public function searchRestaurants(YelpFilter $filter): ResponseInterface
     {
         return $this->request(
             'GET',
@@ -51,7 +51,7 @@ class Client implements YelpClient
     {
         return $this->request(
             'GET',
-            \sprintf('/venues/%s', $id)
+            \sprintf('/businesses/%s', $id)
         );
     }
 }
