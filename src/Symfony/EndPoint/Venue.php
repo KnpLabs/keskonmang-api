@@ -2,7 +2,7 @@
 
 namespace App\Symfony\EndPoint;
 
-use App\Foursquare\FoursquareClient;
+use App\Yelp\YelpClient;
 use App\Symfony\Filter\Venue as VenueFilter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -11,10 +11,10 @@ use Symfony\Component\HttpFoundation\Response;
 
 class Venue extends Controller
 {
-    /** @var FoursquareClient */
+    /** @var YelpClient */
     private $client;
 
-    public function __construct(FoursquareClient $client) {
+    public function __construct(YelpClient $client) {
         $this->client = $client;
     }
 
@@ -29,7 +29,7 @@ class Venue extends Controller
 
         $body = \json_decode($response->getBody());
 
-        return new JsonResponse($body->response->venues);
+        return new JsonResponse($body->businesses);
     }
 
     public function show(Request $request, string $id): JsonResponse
@@ -42,6 +42,6 @@ class Venue extends Controller
 
         $body = \json_decode($response->getBody());
 
-        return new JsonResponse($body->response->venue);
+        return new JsonResponse($body->businesses);
     }
 }

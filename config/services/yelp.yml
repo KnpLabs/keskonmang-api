@@ -1,0 +1,4 @@
+services:
+  App\Yelp\Client:
+    arguments:
+      - '%env(YELP_API_KEY)%'

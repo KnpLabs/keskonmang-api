@@ -2,23 +2,20 @@
 
 namespace App\Symfony\Filter;
 
+use App\Yelp\YelpFilter;
 use Symfony\Component\HttpFoundation\Request;
-use App\Foursquare\FoursquareFilter;
 
-class Venue implements FoursquareFilter
+class Venue implements YelpFilter
 {
-    // @see https://developer.foursquare.com/docs/resources/categories
-    const DEFAULT_CATEGORY = '4d4b7105d754a06374d81259';
+    // @see https://www.yelp.com/developers/documentation/v3/all_category_list
+    const DEFAULT_CATEGORY = 'restaurants';
     const SUPPORTED_CATEGORIES = [
         self::DEFAULT_CATEGORY // Nourriture
     ];
-    const DEFAULT_RADIUS = 1000;
+    const DEFAULT_RADIUS = 40000;
 
-    /** @var double */
-    public $latitude;
-
-    /** @var double */
-    public $longitude;
+    /** @var string */
+    public $location;
 
     /** @var int search perimeter in meters */
     public $radius;
@@ -26,24 +23,14 @@ class Venue implements FoursquareFilter
     /** @var array an array of category ids */
     public $categories;
 
-    public function __construct(Request $request) {
-        $this->latitude = $request->query->get('latitude', null) !== null
-            ? (double) $request->query->get('latitude')
-            : null
-        ;
-
-        $this->longitude =$request->query->get('longitude', null) !== null
-            ? (double) $request->query->get('longitude')
-            : null
-        ;
+    public function __construct(Request $request)
+    {
+        $this->location = $request->query->get('location', null);
 
         $this->radius = $request->query->getInt('radius', self::DEFAULT_RADIUS);
 
-        if (
-            !is_double($this->latitude) ||
-            !is_double($this->longitude)
-        ) {
-            throw new \Exception('Latitude and longitude are mandatory parameters.');
+        if (!$this->location) {
+            throw new \Exception('Location are mandatory parameter.');
         }
 
         $this->categories = [];
@@ -57,15 +44,15 @@ class Venue implements FoursquareFilter
 
     public function toQueryParameters(): string
     {
-        $q = \sprintf('&ll=%s,%s', $this->latitude, $this->longitude);
+        $q = \sprintf('&location=%s', $this->location);
 
         if (\count($this->categories) > 0) {
-            $q .= \sprintf('&categoryId=%s', \implode(',', $this->categories));
+            $q .= \sprintf('&categories=%s', \implode(',', $this->categories));
         } else {
-            $q .= \sprintf('&categoryId=%s', self::DEFAULT_CATEGORY);
+            $q .= \sprintf('&categories=%s', self::DEFAULT_CATEGORY);
         }
 
-        if($this->radius !== null) {
+        if ($this->radius !== null) {
             $q .= \sprintf('&radius=%d', $this->radius);
         }
 

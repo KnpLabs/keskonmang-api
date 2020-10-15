@@ -2,4 +2,4 @@ services:
     App\Symfony\EndPoint\Venue:
       public: true
       arguments:
-          - '@App\Foursquare\Client'
+          - '@App\Yelp\Client'
