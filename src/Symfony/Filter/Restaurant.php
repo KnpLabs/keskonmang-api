@@ -36,6 +36,9 @@ class Restaurant implements YelpFilter
     /** @var int search perimeter in meters */
     public $radius;
 
+    /** @var array an array of price level */
+    public $prices;
+
     /** @var array an array of category names */
     public $categories;
 
@@ -48,7 +51,7 @@ class Restaurant implements YelpFilter
         }
 
         $this->radius = $request->query->getInt('radius', self::DEFAULT_RADIUS);
-
+        $this->prices = $request->query->get('prices', []);
         $this->categories = [];
 
         foreach ($request->query->get('categories', []) as $category) {
@@ -70,6 +73,10 @@ class Restaurant implements YelpFilter
 
         if ($this->radius !== null) {
             $q .= \sprintf('&radius=%d', $this->radius);
+        }
+
+        if (\count($this->prices) > 0) {
+            $q .= \sprintf('&price=%s', \implode(',', $this->prices));
         }
 
         $q .= \sprintf("&limit=", self::LIMIT_RESULTS);
