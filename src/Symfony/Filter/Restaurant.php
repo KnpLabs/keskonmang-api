@@ -5,7 +5,7 @@ namespace App\Symfony\Filter;
 use App\Yelp\YelpFilter;
 use Symfony\Component\HttpFoundation\Request;
 
-class Restaurants implements YelpFilter
+class Restaurant implements YelpFilter
 {
     // @see https://www.yelp.com/developers/documentation/v3/all_category_list
     const DEFAULT_CATEGORY = 'restaurants';

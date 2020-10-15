@@ -2,14 +2,14 @@
 
 namespace App\Symfony\EndPoint;
 
-use App\Symfony\Filter\Restaurants as RestaurantFilter;
+use App\Symfony\Filter\Restaurant as RestaurantFilter;
 use App\Yelp\YelpClient;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class Restaurants extends Controller
+class Restaurant extends Controller
 {
     /** @var YelpClient */
     private $client;

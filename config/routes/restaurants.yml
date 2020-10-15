@@ -1,11 +1,11 @@
 search:
-    path: /search
-    controller: App\Symfony\EndPoint\Venue::search
-    methods: [GET]
+  path: /search
+  controller: App\Symfony\EndPoint\Restaurant::search
+  methods: [ GET ]
 
 show:
-    path: /{id}
-    controller: App\Symfony\EndPoint\Venue::show
-    methods: [GET]
-    requirements:
-        id: \w+
+  path: /{id}
+  controller: App\Symfony\EndPoint\Restaurant::show
+  methods: [ GET ]
+  requirements:
+    id: \w+

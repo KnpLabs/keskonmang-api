@@ -1,5 +1,5 @@
 services:
-    App\Symfony\EndPoint\Venue:
-      public: true
-      arguments:
-          - '@App\Yelp\Client'
+  App\Symfony\EndPoint\Restaurant:
+    public: true
+    arguments:
+      - '@App\Yelp\Client'
