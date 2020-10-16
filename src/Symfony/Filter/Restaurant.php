@@ -9,13 +9,11 @@ class Restaurant implements YelpFilter
 {
     // @see https://www.yelp.com/developers/documentation/v3/all_category_list
     const DEFAULT_CATEGORY = 'restaurants';
-    const SUPPORTED_CATEGORIES = [
-        self::DEFAULT_CATEGORY,
+    const CUISINE_TYPE_CATEGORIES = [
         'bistros',
         'brasseries',
         'burgers',
         'creperies',
-        'halal',
         'kebab',
         'noodles',
         'pizza',
@@ -23,10 +21,20 @@ class Restaurant implements YelpFilter
         'sandwiches',
         'steak',
         'sushi',
-        'vegetarian',
         'wok',
         'wraps',
     ];
+    const DIET_CATEGORIES = [
+        'halal',
+        'vegetarian',
+        'gluten_free',
+    ];
+    const SUPPORTED_CATEGORIES = [
+        ...self::CUISINE_TYPE_CATEGORIES,
+        ...self::DIET_CATEGORIES,
+        self::DEFAULT_CATEGORY,
+    ];
+    const SUPPORTED_PRICES_LEVEL = [1, 2, 3, 4];
     const DEFAULT_RADIUS = 2000;
     const LIMIT_RESULTS = 50;
 
@@ -51,12 +59,19 @@ class Restaurant implements YelpFilter
         }
 
         $this->radius = $request->query->getInt('radius', self::DEFAULT_RADIUS);
-        $this->prices = $request->query->get('prices', []);
         $this->categories = [];
 
         foreach ($request->query->get('categories', []) as $category) {
             if (\in_array($category, self::SUPPORTED_CATEGORIES)) {
                 $this->categories[] = $category;
+            }
+        }
+
+        $this->prices = [];
+
+        foreach ($request->query->get('prices', []) as $priceLevel) {
+            if (\in_array($priceLevel, self::SUPPORTED_PRICES_LEVEL)) {
+                $this->prices[] = $priceLevel;
             }
         }
     }
