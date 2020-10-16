@@ -8,4 +8,4 @@ show:
   controller: App\Symfony\EndPoint\Restaurant::show
   methods: [ GET ]
   requirements:
-    id: "[A-Za-z0-9-]+"
+    id: "[A-Za-z0-9-_]+"
