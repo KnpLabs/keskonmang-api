@@ -4,7 +4,7 @@ FROM composer:1.9.1 as composer
 
 FROM php:7.2-fpm as php
 
-COPY --from=composer /usr/bin/composer /usr/bin/composer
+COPY --from=composer /usr/bin/composer /usr/local/bin/composer
 
 RUN apt-get update \
     && apt-get install -y \
