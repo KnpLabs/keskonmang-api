@@ -1,0 +1,33 @@
+version: '3.7'
+services:
+  mysql:
+    build:
+      context: ..
+      dockerfile: docker/mysql/Dockerfile
+    restart: on-failure
+    environment:
+      - MYSQL_USER=root
+      - MYSQL_ROOT_PASSWORD=
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+      - MYSQL_DATABASE=keskonmange
+
+  nginx:
+    build:
+      context: ..
+      dockerfile: docker/nginx/Dockerfile
+    restart: on-failure
+    ports:
+      - '8081:80'
+    depends_on:
+      - php
+
+  php:
+    build:
+      context: ..
+      dockerfile: docker/app/Dockerfile
+    restart: on-failure
+    volumes:
+      - '../:/app'
+    env_file:
+      - ../.env
+    user: 1000:1000

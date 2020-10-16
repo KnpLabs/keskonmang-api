@@ -1,0 +1,66 @@
+version: 2
+
+reference:
+  vm_machine: &vm_machine
+    working_directory: ~/keskonmange-api
+    machine:
+      image: ubuntu-1604:201903-01
+      docker_layer_caching: true
+    environment:
+      COMPOSE_FILE: docker/ci.yml
+      COMPOSE_PROJECT_NAME: keskonmange-api
+
+  init_env_step: &init_env_step
+    run:
+      name: Init env
+      command: |
+        make cp-env
+        echo 'export STAGE=dev' >> $BASH_ENV
+        echo 'export IMAGE_TAG=ci-${CIRCLE_SHA1}' >> $BASH_ENV
+        echo "SYMFONY_ENV=test" >> .env
+        echo "LOCAL_USER=$(id -u)" >> .env
+
+  build_images: &build_images
+    run:
+      name: Build images
+      command: make build
+
+  install_dependencies: &install_dependencies
+    run:
+      name: Install dependencies
+      command: make install-deps
+
+  restore_api_deps_cache: &restore_api_deps_cache
+    restore_cache:
+      keys:
+        - api-deps-cache-{{ checksum "composer.lock" }}
+
+  save_deps_cache: &save_deps_cache
+    save_cache:
+      key: deps-cache-{{ checksum "composer.lock" }}
+      paths:
+        - vendor/
+
+jobs:
+  lint_and_test:
+    <<: *vm_machine
+    steps:
+      - checkout
+      - <<: *restore_api_deps_cache
+      - <<: *init_env_step
+      - <<: *build_images
+      - <<: *install_dependencies
+      - <<: *save_deps_cache
+      - run:
+          name: Run stack
+          command: make start
+      - run:
+          name: Lint compose files
+          command: make lint-compose-files
+
+workflows:
+  version: 2
+
+  lint_test:
+    jobs:
+      - lint_and_test
