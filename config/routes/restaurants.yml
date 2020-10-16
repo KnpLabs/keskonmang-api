@@ -9,3 +9,18 @@ show:
   methods: [ GET ]
   requirements:
     id: "[A-Za-z0-9-_]+"
+
+filter_cuisine_types:
+  path: /filters/cuisine-types
+  controller: App\Symfony\EndPoint\Filter::getCuisineTypes
+  methods: [ GET ]
+
+filter_diets:
+  path: /filters/diets
+  controller: App\Symfony\EndPoint\Filter::getDiets
+  methods: [ GET ]
+
+filter_prices:
+  path: /filters/prices
+  controller: App\Symfony\EndPoint\Filter::getPrices
+  methods: [ GET ]

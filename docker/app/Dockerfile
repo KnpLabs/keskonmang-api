@@ -2,20 +2,18 @@ FROM composer:1.9.1 as composer
 
 ################################################################################
 
-FROM php:7.2-fpm as php
+FROM php:7.4-fpm as php
 
 COPY --from=composer /usr/bin/composer /usr/local/bin/composer
 
 RUN apt-get update \
     && apt-get install -y \
         zlib1g-dev \
-        unzip
+        unzip \
+        libzip-dev
 
 RUN docker-php-ext-install pdo_mysql \
     && docker-php-ext-install zip
-
-RUN pecl install apcu-5.1.8 \
-    && docker-php-ext-enable apcu
 
 RUN useradd docker -d /home/docker -u 1000 && \
     mkdir -p /home/docker/opcache /home/docker/composer /app && \
