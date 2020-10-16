@@ -1,4 +1,4 @@
-REMOTE ?= deploy@keskonmange.knpnet.net
+REMOTE ?= deploy@keskonmang.knpnet.net
 REMOTE_PATH ?= ~/apps/keskonmange.api
 STAGE ?= dev
 IMAGE_TAG ?= dev
