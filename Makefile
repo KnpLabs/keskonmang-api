@@ -1,6 +1,6 @@
-REMOTE ?= deploy@keskonmang.knpnet.net
-REMOTE_PATH ?= ~/apps/keskonmange.api
 STAGE ?= dev
+REMOTE ?= deploy@keskonmang.knpnet.net
+REMOTE_PATH=/home/deploy/api
 IMAGE_TAG ?= dev
 
 .PHONY: dev
@@ -50,11 +50,11 @@ push: .ensure-stage-exists .validate-image-tag
 
 .PHONY: remote-deploy
 remote-deploy: .ensure-stage-exists .validate-image-tag .remote-edit-env
-	scp ./docker-compose.$(STAGE).yml ${REMOTE}:${REMOTE_PATH}/docker-compose.$(STAGE).yml
+	scp docker/$(STAGE).yml ${REMOTE}:${REMOTE_PATH}/docker/$(STAGE).yml
 	ssh -t ${REMOTE} '\
 		cd ${REMOTE_PATH} && \
-		source .env && \
 		export IMAGE_TAG=$(IMAGE_TAG) && \
+		sed -i "s/^IMAGE_TAG=.*$$/IMAGE_TAG=$(IMAGE_TAG)/" .env && \
 		docker-compose -f docker/${STAGE}.yml pull --include-deps && \
 		docker-compose -f docker/$(STAGE).yml up -d --no-build --remove-orphans && \
 		docker-compose -f docker/$(STAGE).yml ps'
