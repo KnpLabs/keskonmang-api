@@ -10,7 +10,7 @@ services:
       - MYSQL_USER=root
       - MYSQL_ROOT_PASSWORD=
       - MYSQL_ALLOW_EMPTY_PASSWORD=yes
-      - MYSQL_DATABASE=keskonmange
+      - MYSQL_DATABASE=keskonmang
     networks:
      - internal
 
@@ -24,10 +24,10 @@ services:
       - php
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.app.rule=Host(`api.keskonmange.knpnet.net`)"
+      - "traefik.http.routers.app.rule=Host(`api.keskonmang.knpnet.net`)"
       - "traefik.http.routers.app.entrypoints=web"
       - "traefik.http.routers.app.entrypoints=websecure"
-      - "traefik.http.routers.app.tls.certresolver=keskonmange"
+      - "traefik.http.routers.app.tls.certresolver=keskonmang"
       - "traefik.docker.network=traefik"
     networks:
      - traefik
