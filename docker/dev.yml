@@ -9,7 +9,7 @@ services:
       - MYSQL_USER=root
       - MYSQL_ROOT_PASSWORD=
       - MYSQL_ALLOW_EMPTY_PASSWORD=yes
-      - MYSQL_DATABASE=keskonmange
+      - MYSQL_DATABASE=keskonmang
 
   nginx:
     build:
