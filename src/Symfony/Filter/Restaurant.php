@@ -94,7 +94,7 @@ class Restaurant implements YelpFilter
             $q .= \sprintf('&price=%s', \implode(',', $this->prices));
         }
 
-        $q .= \sprintf("&limit=", self::LIMIT_RESULTS);
+        $q .= \sprintf('&limit=%d', self::LIMIT_RESULTS);
         $q .= '&open_now=1';
 
         return $q;

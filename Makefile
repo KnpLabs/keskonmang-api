@@ -74,3 +74,7 @@ ifeq ($(IMAGE_TAG),)
 	@exit 1
 endif
 endif
+
+.PHONY: phpspec
+phpspec:
+	docker-compose run --rm php vendor/bin/phpspec run -fpretty -v
