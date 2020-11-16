@@ -95,6 +95,7 @@ class Restaurant implements YelpFilter
         }
 
         $q .= \sprintf("&limit=", self::LIMIT_RESULTS);
+        $q .= '&open_now=1';
 
         return $q;
     }
