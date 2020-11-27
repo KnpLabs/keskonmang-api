@@ -6,11 +6,9 @@ use App\Domain\User as UserEntity;
 
 class User
 {
-    /** @var int */
-    public $id;
+    public int $id;
 
-    /** @var string */
-    public $googleId;
+    public string $googleId;
 
     public function __construct(UserEntity $user)
     {
