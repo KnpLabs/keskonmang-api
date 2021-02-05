@@ -5,3 +5,7 @@ users:
 restaurants:
   resource: 'routes/restaurants.yml'
   prefix: '/restaurants'
+
+history:
+  resource: 'routes/history.yml'
+  prefix: '/history'
