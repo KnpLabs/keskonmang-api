@@ -1,7 +1,7 @@
 version: '3.7'
 services:
   mysql:
-    image: quay.io/knplabs/keskonmang-api:mysql-${IMAGE_TAG}
+    image: knplabs/keskonmang-api:mysql-${IMAGE_TAG}
     build:
       context: ..
       dockerfile: docker/mysql/Dockerfile
@@ -15,7 +15,7 @@ services:
      - internal
 
   app:
-    image: quay.io/knplabs/keskonmang-api:app-${IMAGE_TAG}
+    image: knplabs/keskonmang-api:app-${IMAGE_TAG}
     build:
       context: ..
       dockerfile: docker/nginx/Dockerfile
@@ -34,7 +34,7 @@ services:
      - internal
 
   php:
-    image: quay.io/knplabs/keskonmang-api:php-${IMAGE_TAG}
+    image: knplabs/keskonmang-api:php-${IMAGE_TAG}
     build:
       context: ..
       dockerfile: docker/app/Dockerfile
