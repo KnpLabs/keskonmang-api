@@ -34,7 +34,7 @@ class GoogleUserProvider
             ->findOneBy(['googleId' => $googleSub])
         ;
 
-        // if user dont exist, create it in the DB
+        // if user doesn't exist, create it in the DB
         if(!$user) {
             $user = new User($googleSub);
             $this->orm->persist($user);
