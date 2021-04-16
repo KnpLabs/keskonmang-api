@@ -11,19 +11,18 @@ use Symfony\Component\HttpFoundation\Response;
 
 class Restaurant extends Controller
 {
-    /** @var YelpClient */
-    private $client;
+    private YelpClient $yelpClient;
 
-    public function __construct(YelpClient $client)
+    public function __construct(YelpClient $yelpClient)
     {
-        $this->client = $client;
+        $this->yelpClient = $yelpClient;
     }
 
     public function search(Request $request): JsonResponse
     {
         try {
             $filter = new RestaurantFilter($request);
-            $response = $this->client->searchRestaurants($filter);
+            $response = $this->yelpClient->searchRestaurants($filter);
         } catch (\Exception $e) {
             return new JsonResponse($e->getMessage(), Response::HTTP_BAD_REQUEST);
         }
@@ -36,7 +35,7 @@ class Restaurant extends Controller
     public function show(Request $request, string $id): JsonResponse
     {
         try {
-            $response = $this->client->getRestaurantDetails($id);
+            $response = $this->yelpClient->getRestaurantDetails($id);
         } catch (\Exception $e) {
             return new JsonReponse($e->getMessage(), Response::HTTP_BAD_REQUEST);
         }

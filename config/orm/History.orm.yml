@@ -12,6 +12,10 @@ App\Domain\History:
             type: string
             nullable: false
 
+        restaurantName:
+            type: string
+            nullable: false
+
         createdAt:
             type: datetime
             nullable: false
