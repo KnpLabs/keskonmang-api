@@ -1,9 +1,8 @@
 services:
-  App\Symfony\EndPoint\:
-    resource: '../../src/Symfony/EndPoint/*'
-    tags: ['controller.service_arguments']
+    _defaults:
+        bind:
+            $yelpClient: '@App\Yelp\Client'
 
-  App\Symfony\EndPoint\Restaurant:
-    public: true
-    bind:
-      $client: '@App\Yelp\Client'
+    App\Symfony\EndPoint\:
+        resource: '../../src/Symfony/EndPoint/*'
+        tags: ['controller.service_arguments']

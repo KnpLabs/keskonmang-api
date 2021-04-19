@@ -7,13 +7,15 @@ class History
     private int $id;
     private User $user;
     private string $restaurantId;
+    private string $restaurantName;
     private \DateTimeInterface $createdAt;
 
-    public function __construct(User $user, string $restaurantId)
+    public function __construct(User $user, string $restaurantId, string $restaurantName)
     {
-        $this->user         = $user;
-        $this->restaurantId = $restaurantId;
-        $this->createdAt    = new \DateTimeImmutable();
+        $this->user           = $user;
+        $this->restaurantId   = $restaurantId;
+        $this->restaurantName = $restaurantName;
+        $this->createdAt      = new \DateTimeImmutable();
     }
 
     public function getId(): int
@@ -29,6 +31,11 @@ class History
     public function getRestaurantId(): string
     {
         return $this->restaurantId;
+    }
+
+    public function getRestaurantName(): string
+    {
+        return $this->restaurantName;
     }
 
     public function getCreatedAt(): \DateTimeInterface
