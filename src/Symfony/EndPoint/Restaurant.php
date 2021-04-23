@@ -3,6 +3,7 @@
 namespace App\Symfony\EndPoint;
 
 use App\Symfony\Filter\Restaurant as RestaurantFilter;
+use App\Symfony\JsonDefinition\Restaurant as RestaurantDefinition;
 use App\Yelp\YelpClient;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -42,6 +43,6 @@ class Restaurant extends Controller
 
         $body = \json_decode($response->getBody());
 
-        return new JsonResponse($body);
+        return new JsonResponse(new RestaurantDefinition($body));
     }
 }
