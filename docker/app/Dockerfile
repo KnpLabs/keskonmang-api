@@ -16,18 +16,20 @@ RUN docker-php-ext-install pdo_mysql \
     && docker-php-ext-install zip
 
 RUN useradd docker -d /home/docker -u 1000 && \
-    mkdir -p /home/docker/opcache /home/docker/composer /app && \
+    mkdir -p /home/docker/composer /app && \
     chown -R docker:docker /home/docker /app
 
-ENV COMPOSER_HOME /home/docker/composer
-
-USER docker
 WORKDIR /app
 
-COPY composer.* /app/
+RUN chown docker /
 
-RUN composer install --prefer-dist --no-scripts --no-dev && \
-    composer clear-cache
+USER docker
+
+COPY --chown=docker:docker composer.* /app/
+
+RUN composer install $([ "$ENVIRONMENT" = 'prod' ] && echo '--no-dev --optimize-autoloader')
+
+ENV PATH="${PATH}:vendor/bin:bin"
 
 COPY --chown=docker:docker ./ /app/
 
