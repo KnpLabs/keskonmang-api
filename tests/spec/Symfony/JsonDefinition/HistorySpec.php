@@ -14,6 +14,7 @@ class HistorySpec extends ObjectBehavior
         $history->getId()->willReturn(1);
         $history->getCreatedAt()->willReturn(new \DateTime('11/12/2019 00:00:00'));
         $history->getRestaurantId()->willReturn('123');
+        $history->getRestaurantName()->willReturn('Restaurant name');
 
         $this->beConstructedWith($history);
     }
@@ -30,7 +31,12 @@ class HistorySpec extends ObjectBehavior
 
     function it_has_restaurant_id()
     {
-        $this->restaurant->shouldBe('123');
+        $this->restaurantId->shouldBe('123');
+    }
+
+    function it_has_restaurant_name()
+    {
+        $this->restaurantName->shouldBe('Restaurant name');
     }
 
     function it_has_a_created_at()

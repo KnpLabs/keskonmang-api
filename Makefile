@@ -16,7 +16,7 @@ cp-env:
 
 .PHONY: install-deps
 install-deps:
-	docker-compose run --rm php composer install --prefer-dist
+	docker-compose run --rm php composer install
 
 .PHONY: start
 start:
