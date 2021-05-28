@@ -22,7 +22,7 @@ class HistoryRepository extends ServiceEntityRepository
             ->createQueryBuilder('history')
             ->andWhere('history.user = :user')
             ->setParameter('user', $user)
-            ->orderBy('history.createdAt')
+            ->orderBy('history.createdAt', 'DESC')
             ->setFirstResult(($page - 1) * self::LIMIT)
             ->setMaxResults(self::LIMIT)
             ->getQuery()
