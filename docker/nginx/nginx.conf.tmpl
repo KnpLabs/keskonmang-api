@@ -20,6 +20,7 @@ server {
 
     # allow cross origin requests
     add_header Access-Control-Allow-Origin "*";
+    add_header Access-Control-Expose-Headers "Total-Pages" always;
 
     if ($request_method = "OPTIONS") {
         add_header Access-Control-Allow-Origin "*";

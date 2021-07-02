@@ -25,7 +25,10 @@ class History extends Controller
             $definitions[] = new HistoryDefinition($history);
         }
 
-        return new JsonResponse($definitions);
+        $totalHistories = $repository->countAllForUser($this->getUser());
+        $totalPages     = ceil($totalHistories / HistoryRepository::LIMIT);
+
+        return new JsonResponse($definitions, Response::HTTP_OK, ['Total-Pages' => $totalPages]);
     }
 
     public function create(Request $request, HistoryRepository $repository): JsonResponse

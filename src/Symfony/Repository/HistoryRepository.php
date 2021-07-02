@@ -9,7 +9,7 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 
 class HistoryRepository extends ServiceEntityRepository
 {
-    private const LIMIT = 10;
+    public const LIMIT = 10;
 
     public function __construct(ManagerRegistry $registry)
     {
@@ -27,6 +27,18 @@ class HistoryRepository extends ServiceEntityRepository
             ->setMaxResults(self::LIMIT)
             ->getQuery()
             ->getResult()
+        ;
+    }
+
+    public function countAllForUser(User $user): int
+    {
+        return $this
+            ->createQueryBuilder('history')
+            ->select('COUNT(history.id)')
+            ->andWhere('history.user = :user')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getSingleScalarResult()
         ;
     }
 
