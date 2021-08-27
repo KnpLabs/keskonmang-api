@@ -46,4 +46,17 @@ class History extends Controller
 
         return new JsonResponse($history);
     }
+
+    public function delete(string $id, HistoryRepository $repository): JsonResponse
+    {
+        $history = $repository->find($id);
+
+        if (!$history) {
+            return new JsonResponse(null, Response::HTTP_NOT_FOUND);
+        }
+
+        $repository->delete($id);
+
+        return new JsonResponse($id);
+    }
 }

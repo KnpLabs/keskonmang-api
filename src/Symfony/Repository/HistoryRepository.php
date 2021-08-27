@@ -47,4 +47,16 @@ class HistoryRepository extends ServiceEntityRepository
         $this->_em->persist($history);
         $this->_em->flush();
     }
+
+    public function delete(string $id): void
+    {
+        $this
+            ->createQueryBuilder('history')
+            ->delete(History::class, 'history')
+            ->where('history.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->execute()
+        ;
+    }
 }

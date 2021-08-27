@@ -7,3 +7,10 @@ history_create:
   path: /create
   controller: App\Symfony\EndPoint\History::create
   methods: [ POST ]
+
+history_delete:
+  path: /delete/{id}
+  controller: App\Symfony\EndPoint\History::delete
+  methods: [ DELETE ]
+  requirements:
+    id: '\d+'
