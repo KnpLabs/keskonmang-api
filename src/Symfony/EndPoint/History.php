@@ -55,6 +55,10 @@ class History extends Controller
             return new JsonResponse(null, Response::HTTP_NOT_FOUND);
         }
 
+        if ($history->getUser() !== $this->getUser()) {
+            return new JsonResponse(null, Response::HTTP_UNAUTHORIZED);
+        }
+
         $repository->delete($id);
 
         return new JsonResponse($id);
