@@ -6,18 +6,18 @@ use App\Domain\History as HistoryEntity;
 use App\Symfony\JsonDefinition\History as HistoryDefinition;
 use App\Symfony\Repository\HistoryRepository;
 use App\Yelp\YelpClient;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class History extends Controller
+class History extends AbstractController
 {
     public function list(Request $request, HistoryRepository $repository): JsonResponse
     {
         $definitions = [];
         $histories   = $repository->findAllForUser(
-            $this->getUser(), 
+            $this->getUser(),
             $request->query->getInt('page', 1)
         );
 

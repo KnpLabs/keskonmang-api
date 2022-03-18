@@ -5,12 +5,12 @@ namespace App\Symfony\EndPoint;
 use App\Symfony\Filter\Restaurant as RestaurantFilter;
 use App\Symfony\JsonDefinition\Restaurant as RestaurantDefinition;
 use App\Yelp\YelpClient;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class Restaurant extends Controller
+class Restaurant extends AbstractController
 {
     private YelpClient $yelpClient;
 
@@ -38,7 +38,7 @@ class Restaurant extends Controller
         try {
             $response = $this->yelpClient->getRestaurantDetails($id);
         } catch (\Exception $e) {
-            return new JsonReponse($e->getMessage(), Response::HTTP_BAD_REQUEST);
+            return new JsonResponse($e->getMessage(), Response::HTTP_BAD_REQUEST);
         }
 
         $body = \json_decode($response->getBody());

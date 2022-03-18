@@ -5,7 +5,7 @@ namespace App\Symfony\Repository;
 use App\Domain\History;
 use App\Domain\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 class HistoryRepository extends ServiceEntityRepository
 {

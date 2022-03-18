@@ -3,11 +3,11 @@
 namespace App\Symfony\EndPoint;
 
 use App\Symfony\Filter\Restaurant as RestaurantFilter;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
-class Filter extends Controller
+class Filter extends AbstractController
 {
     public function getCuisineTypes(Request $request): JsonResponse
     {

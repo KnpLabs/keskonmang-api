@@ -3,10 +3,10 @@
 namespace App\Symfony\EndPoint;
 
 use App\Symfony\JsonDefinition\User as UserDefinition;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-class User extends Controller
+class User extends AbstractController
 {
     public function me(): JsonResponse
     {

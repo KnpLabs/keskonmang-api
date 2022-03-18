@@ -1,11 +1,7 @@
-users:
-  resource: 'routes/user.yml'
-  prefix: '/users'
+controllers:
+    resource: ../src/Controller/
+    type: annotation
 
-restaurants:
-  resource: 'routes/restaurants.yml'
-  prefix: '/restaurants'
-
-history:
-  resource: 'routes/history.yml'
-  prefix: '/history'
+kernel:
+    resource: ../src/Kernel.php
+    type: annotation

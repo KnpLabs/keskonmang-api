@@ -3,15 +3,20 @@
 namespace App\Symfony\Security;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
-use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
+use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
+use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
+use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
+use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
 
-class TokenAuthenticator extends AbstractGuardAuthenticator
+class TokenAuthenticator extends AbstractAuthenticator
 {
     private $userProvider;
 
@@ -21,20 +26,13 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
         $this->userProvider = $userProvider;
     }
 
-    public function supports(Request $request)
+    public function supports(Request $request): bool
     {
         return $request->headers->has('Authorization');
     }
 
-    public function getCredentials(Request $request): string
-    {     
-        $authorization = $request->headers->get('Authorization');
-        
-        return \str_replace('Bearer ', '', $authorization);
-    }
-
     public function getUser($token, UserProviderInterface $userProvider)
-    {        
+    {
         if (null === $token) {
             return;
         }
@@ -42,17 +40,36 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
         return $this->userProvider->getUser($token);
     }
 
-    public function checkCredentials($credentials, UserInterface $user)
-    {   
-        return true;
+    public function getCredentials(Request $request): ?string
+    {     
+        $authorization = $request->headers->get('Authorization');
+
+        if (!$authorization) {
+            return null;
+        }
+        
+        return \str_replace('Bearer ', '', $authorization);
     }
 
-    public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
+    public function authenticate(Request $request): SelfValidatingPassport
     {
-        return null;
+        $bearerToken = $this->getCredentials($request);
+
+        if (null === $bearerToken) {
+            // The token header was empty, authentication fails with HTTP Status
+            // Code 401 "Unauthorized"
+            throw new CustomUserMessageAuthenticationException('No API token provided');
+        }
+
+        return new SelfValidatingPassport(new UserBadge($bearerToken));
     }
 
-    public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
+    public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey): JsonResponse
+    {
+        return new JsonResponse(['status' => 'failed']);
+    }
+
+    public function onAuthenticationFailure(Request $request, AuthenticationException $exception): JsonResponse
     {
         $data = [
             'message' => strtr($exception->getMessageKey(), $exception->getMessageData())
@@ -68,10 +85,5 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
         ];
 
         return new JsonResponse($data, Response::HTTP_UNAUTHORIZED);
-    }
-
-    public function supportsRememberMe()
-    {
-        return false;
     }
 }
