@@ -1,8 +1,8 @@
-FROM composer:2.0 as composer
+FROM composer:2.2 as composer
 
 ################################################################################
 
-FROM php:7.4-fpm as php
+FROM php:8.1-fpm as php
 
 COPY --from=composer /usr/bin/composer /usr/local/bin/composer
 
@@ -10,7 +10,8 @@ RUN apt-get update \
     && apt-get install -y \
         zlib1g-dev \
         unzip \
-        libzip-dev
+        libzip-dev \
+        git
 
 RUN docker-php-ext-install pdo_mysql \
     && docker-php-ext-install zip
