@@ -5,7 +5,6 @@ namespace App\Symfony\EndPoint;
 use App\Domain\History as HistoryEntity;
 use App\Symfony\JsonDefinition\History as HistoryDefinition;
 use App\Symfony\Repository\HistoryRepository;
-use App\Yelp\YelpClient;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

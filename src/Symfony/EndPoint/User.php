@@ -10,9 +10,6 @@ class User extends Controller
 {
     public function me(): JsonResponse
     {
-        $user = $this->getUser();    
-        $def = new UserDefinition($user);
-
-        return new JsonResponse($def);
+        return new JsonResponse(new UserDefinition($this->getUser()));
     }
 }

@@ -1,30 +1,30 @@
 App\Domain\History:
-    type: entity
-    repositoryClass: App\Symfony\Repository\HistoryRepository
-    table: history
+  type: entity
+  repositoryClass: App\Symfony\Repository\HistoryRepository
+  table: history
+  id:
     id:
-        id:
-            type: integer
-            generator:
-                strategy: AUTO
-    fields:
-        restaurantId:
-            type: string
-            nullable: false
+      type: integer
+      generator:
+        strategy: AUTO
+  fields:
+    restaurantId:
+      type: string
+      nullable: false
 
-        restaurantName:
-            type: string
-            nullable: false
+    restaurantName:
+      type: string
+      nullable: false
 
-        createdAt:
-            type: datetime
-            nullable: false
+    createdAt:
+      type: datetime
+      nullable: false
 
-    manyToOne:
-        user:
-            targetEntity: App\Domain\User
-            joinColumn:
-                name: user_id
-                referencedColumnName: id
-                nullable: false
-                onDelete: CASCADE
+  manyToOne:
+    user:
+      targetEntity: App\Domain\User
+      joinColumn:
+        name: user_id
+        referencedColumnName: id
+        nullable: false
+        onDelete: CASCADE

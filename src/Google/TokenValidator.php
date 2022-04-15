@@ -4,8 +4,7 @@ namespace App\Google;
 
 class TokenValidator
 {
-    /** @var Google_Client */
-    private $client;
+    private \Google_Client $client;
 
     public function __construct(\Google_Client $client)
     {

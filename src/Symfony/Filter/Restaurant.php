@@ -35,39 +35,28 @@ class Restaurant implements YelpFilter
         self::DEFAULT_CATEGORY,
     ];
     const SUPPORTED_PRICES_LEVEL = [1, 2, 3, 4];
-    const DEFAULT_RADIUS = 2000;
+    const DEFAULT_RADIUS = 2000; // in meters
     const LIMIT_RESULTS = 50;
 
-    /** @var string */
-    public $location;
-
-    /** @var int search perimeter in meters */
-    public $radius;
-
-    /** @var array an array of price level */
-    public $prices;
-
-    /** @var array an array of category names */
-    public $categories;
+    public string $location;
+    public int $radius;
+    public array $prices = [];
+    public array $categories = [];
 
     public function __construct(Request $request)
     {
-        $this->location = $request->query->get('location', null);
-
-        if (!$this->location) {
+        if (!$location = $request->query->get('location', null)) {
             throw new \Exception('Location are a mandatory parameter.');
         }
 
-        $this->radius = $request->query->getInt('radius', self::DEFAULT_RADIUS);
-        $this->categories = [];
+        $this->location = $location;
+        $this->radius   = $request->query->getInt('radius', self::DEFAULT_RADIUS);
 
         foreach ($request->query->get('categories', []) as $category) {
             if (\in_array($category, self::SUPPORTED_CATEGORIES)) {
                 $this->categories[] = $category;
             }
         }
-
-        $this->prices = [];
 
         foreach ($request->query->get('prices', []) as $priceLevel) {
             if (\in_array($priceLevel, self::SUPPORTED_PRICES_LEVEL)) {

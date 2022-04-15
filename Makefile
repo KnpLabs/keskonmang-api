@@ -6,10 +6,6 @@ IMAGE_TAG ?= dev
 .PHONY: dev
 dev: cp-env build install-deps start
 
-.PHONY: .remote-edit-env
-.remote-edit-env:
-	ssh -t ${REMOTE} 'vim ${REMOTE_PATH}/.env'
-
 .PHONY: cp-env
 cp-env:
 	cp -n .env.dist .env
@@ -30,26 +26,13 @@ stop:
 build: .ensure-stage-exists .validate-image-tag
 	docker-compose -f docker/$(STAGE).yml build $(SERVICES)
 
-.PHONY: lint-dockerfiles
-lint-dockerfiles:
-	@./bin/lint-dockerfiles
-
-.PHONY: lint-compose-files
-lint-compose-files:
-	@for file in docker/*.yml; do \
-		docker-compose -f $$file config >/dev/null; \
-	done
-
-.PHONY: lint-yaml
-lint-yaml:
-	docker-compose run --rm php bin/console lint:yaml src --parse-tags
-
 .PHONY: push
 push: .ensure-stage-exists .validate-image-tag
 	docker-compose -f docker/$(STAGE).yml push
 
 .PHONY: remote-deploy
-remote-deploy: .ensure-stage-exists .validate-image-tag .remote-edit-env
+remote-deploy: .ensure-stage-exists .validate-image-tag
+	ssh -t ${REMOTE} 'vim ${REMOTE_PATH}/.env'
 	scp docker/$(STAGE).yml ${REMOTE}:${REMOTE_PATH}/docker/$(STAGE).yml
 	ssh -t ${REMOTE} '\
 		cd ${REMOTE_PATH} && \
@@ -78,3 +61,13 @@ endif
 .PHONY: phpspec
 phpspec:
 	docker-compose run --rm php vendor/bin/phpspec run -fpretty -v
+
+.PHONY: lint-compose-files
+lint-compose-files:
+	@for file in docker/*.yml; do \
+		docker-compose -f $$file config >/dev/null; \
+	done
+
+.PHONY: lint-yaml
+lint-yaml:
+	docker-compose run --rm php bin/console lint:yaml config --parse-tags

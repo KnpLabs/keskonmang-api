@@ -1,4 +1,4 @@
 services:
-    App\Symfony\EventListener\RequestListener:
-        tags:
-            - { name: kernel.event_listener, event: kernel.request }
+  App\Symfony\EventListener\RequestListener:
+    tags:
+      - { name: kernel.event_listener, event: kernel.request }
