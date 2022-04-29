@@ -46,7 +46,7 @@ class Restaurant implements YelpFilter
     public function __construct(Request $request)
     {
         if (!$location = $request->query->get('location', null)) {
-            throw new \Exception('Location are a mandatory parameter.');
+            throw new \Exception('Location is a mandatory parameter.');
         }
 
         $this->location = $location;
