@@ -2,7 +2,7 @@
 
 ## Setup on local environment
 
-There is a `.env.dist` at the root directory that can be clone into `.env`.
+There is a `.env.dist` at the root directory that can be cloned into `.env`.
 It's up to you to edit these env vars according to your local environment.
 
 **Note**: the `make dev` command will copy the `.env.dist` file into `.env` if it does not exist.
@@ -13,7 +13,7 @@ It's up to you to edit these env vars according to your local environment.
 $ make dev
 ```
 
-This command will build the docker containers and update dependency.
+This command will build the docker containers and update dependencies.
 
 ### Services
 
