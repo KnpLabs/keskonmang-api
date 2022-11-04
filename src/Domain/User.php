@@ -8,14 +8,9 @@ class User implements UserInterface
 {
     const ROLE_USER = 'ROLE_USER';
 
-    /** @var int */
-    private $id;
-
-    /** @var array */
-    private $roles;
-
-    /** @var string */
-    private $googleId;
+    private int $id;
+    private array $roles;
+    private string $googleId;
 
     public function __construct(string $googleId)
     {
@@ -34,6 +29,11 @@ class User implements UserInterface
         ];
     }
 
+    public function getGoogleId(): string
+    {
+        return $this->googleId;
+    }
+
     public function getPassword() {}
 
     public function getSalt() {}
@@ -41,9 +41,4 @@ class User implements UserInterface
     public function getUsername() {}
 
     public function eraseCredentials() {}
-
-    public function getGoogleId(): string
-    {
-        return $this->googleId;
-    }
 }

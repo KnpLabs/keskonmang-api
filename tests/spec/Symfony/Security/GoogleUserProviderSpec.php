@@ -12,10 +12,8 @@ use Prophecy\Argument;
 
 class GoogleUserProviderSpec extends ObjectBehavior
 {
-    function let(
-        EntityManagerInterface $orm,
-        TokenValidator $tokenValidator
-    ) {
+    function let(EntityManagerInterface $orm, TokenValidator $tokenValidator)
+    {
         $this->beConstructedWith($orm, $tokenValidator);
     }
 

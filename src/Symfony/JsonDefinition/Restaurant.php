@@ -9,24 +9,27 @@ class Restaurant
     public ?string $url;
     public ?string $image;
     public ?string $phone;
-    public ?int $price;
     public ?string $address;
     public ?string $zipCode;
     public ?string $city;
     public ?string $country;
+    public ?int $price;
 
     public function __construct(object $restaurantData)
     {
-        $this->id = $restaurantData->id;
-        $this->name = $restaurantData->name;
-        $this->url = $restaurantData->url;
-        $this->image = $restaurantData->image_url;
-        $this->phone = $restaurantData->display_phone;
-        $this->price = property_exists($restaurantData, 'price') ? mb_strlen($restaurantData->price) : null;
+        $this->id      = $restaurantData->id;
+        $this->name    = $restaurantData->name;
+        $this->url     = $restaurantData->url;
+        $this->image   = $restaurantData->image_url;
+        $this->phone   = $restaurantData->display_phone;
         $this->zipCode = $restaurantData->location->zip_code;
-        $this->city = $restaurantData->location->city;
+        $this->city    = $restaurantData->location->city;
         $this->country = $restaurantData->location->country;
         $this->address = $restaurantData->location->address1;
+        $this->price   = property_exists($restaurantData, 'price') 
+            ? mb_strlen($restaurantData->price) 
+            : null
+        ;
 
         if ($restaurantData->location->address2 && $restaurantData->location->address3) {
             $this->address .= sprintf(

@@ -5,27 +5,22 @@ namespace App\Symfony\Security;
 use App\Domain\User;
 use App\Google\TokenValidator;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 class GoogleUserProvider
 {
-    /** @var EntityManagerInterface */
-    private $orm;
-
-    /** @var TokenValidator */
-    private $tokenValidator;
+    private EntityManagerInterface $orm;
+    private TokenValidator $tokenValidator;
 
     public function __construct(
         EntityManagerInterface $orm,
         TokenValidator $tokenValidator
     ) {
-        $this->orm = $orm;
+        $this->orm            = $orm;
         $this->tokenValidator = $tokenValidator;
     }
     
     public function getUser(string $token): User
     {
-        // verify JWT over google
         $googleSub = $this->tokenValidator->verifyToken($token);
 
         $user = $this
@@ -34,7 +29,6 @@ class GoogleUserProvider
             ->findOneBy(['googleId' => $googleSub])
         ;
 
-        // if user doesn't exist, create it in the DB
         if(!$user) {
             $user = new User($googleSub);
             $this->orm->persist($user);

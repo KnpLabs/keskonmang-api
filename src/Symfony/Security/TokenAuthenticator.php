@@ -13,11 +13,10 @@ use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
 
 class TokenAuthenticator extends AbstractGuardAuthenticator
 {
-    private $userProvider;
+    private GoogleUserProvider $userProvider;
 
-    public function __construct(
-        GoogleUserProvider $userProvider
-    ) {
+    public function __construct(GoogleUserProvider $userProvider)
+    {
         $this->userProvider = $userProvider;
     }
 
@@ -34,12 +33,8 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
     }
 
     public function getUser($token, UserProviderInterface $userProvider)
-    {        
-        if (null === $token) {
-            return;
-        }
-
-        return $this->userProvider->getUser($token);
+    {
+        return $token ? $this->userProvider->getUser($token) : null;
     }
 
     public function checkCredentials($credentials, UserInterface $user)
@@ -54,20 +49,16 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
     {
-        $data = [
+        return new JsonResponse([
             'message' => strtr($exception->getMessageKey(), $exception->getMessageData())
-        ];
-
-        return new JsonResponse($data, Response::HTTP_FORBIDDEN);
+        ], Response::HTTP_FORBIDDEN);
     }
 
     public function start(Request $request, AuthenticationException $authException = null)
     {
-        $data = [
+        return new JsonResponse([
             'message' => 'Authentication Required'
-        ];
-
-        return new JsonResponse($data, Response::HTTP_UNAUTHORIZED);
+        ], Response::HTTP_UNAUTHORIZED);
     }
 
     public function supportsRememberMe()

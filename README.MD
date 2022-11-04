@@ -33,3 +33,4 @@ This command will build the docker containers and update dependencies.
 | Command              | Description                             |
 | -------------------- | ----------------------------------------|
 | `lint-compose-files` | Run linter for compose files            |
+| `lint-yaml`          | Run linter for yaml files               |

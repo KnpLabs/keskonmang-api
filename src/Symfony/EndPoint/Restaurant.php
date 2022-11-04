@@ -22,7 +22,7 @@ class Restaurant extends Controller
     public function search(Request $request): JsonResponse
     {
         try {
-            $filter = new RestaurantFilter($request);
+            $filter   = new RestaurantFilter($request);
             $response = $this->yelpClient->searchRestaurants($filter);
         } catch (\Exception $e) {
             return new JsonResponse($e->getMessage(), Response::HTTP_BAD_REQUEST);

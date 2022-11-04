@@ -1,4 +1,4 @@
 me:
-    path: /me
-    controller: App\Symfony\EndPoint\User::me
-    methods: [GET]
+  path: /me
+  controller: App\Symfony\EndPoint\User::me
+  methods: [GET]

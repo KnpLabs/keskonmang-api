@@ -4,7 +4,6 @@ namespace spec\App\Symfony\JsonDefinition;
 
 use App\Domain\History;
 use App\Symfony\JsonDefinition\History as HistoryDefinition;
-use App\Symfony\JsonDefinition\Restaurant as RestaurantDefinition;
 use PhpSpec\ObjectBehavior;
 
 class HistorySpec extends ObjectBehavior
