@@ -12,8 +12,7 @@ RUN apt-get update \
         unzip \
         libzip-dev
 
-RUN docker-php-ext-install pdo_mysql \
-    && docker-php-ext-install zip
+RUN docker-php-ext-install pdo_mysql zip
 
 RUN useradd docker -d /home/docker -u 1000 && \
     mkdir -p /home/docker/composer /app && \
